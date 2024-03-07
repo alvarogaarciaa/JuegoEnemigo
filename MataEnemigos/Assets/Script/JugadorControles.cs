@@ -13,6 +13,7 @@ public class JugadorControles : MonoBehaviour
     UnityEngine.Vector3 moveInput, moveVelocity;
     public Camera mainCamera;
     DisparaBala controladorBalas;
+    public GameObject botonReiniciar;
     
     // Start is called before the first frame update
     void Start()
@@ -46,5 +47,17 @@ public class JugadorControles : MonoBehaviour
         moveInput = new UnityEngine.Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
         moveVelocity = moveInput.normalized * speed;
         characterController.Move(moveVelocity * speed * Time.fixedDeltaTime);
+    }
+
+    // cuando el enemigo entre en contacto con el jugador
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemigo"))
+        {
+            //Aparece el boton de reiniciar
+            botonReiniciar.SetActive(true);
+            Destroy(gameObject);
+
+        }
     }
 }

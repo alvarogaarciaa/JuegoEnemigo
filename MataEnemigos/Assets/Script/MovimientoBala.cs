@@ -8,6 +8,8 @@ public class MovimientoBala : MonoBehaviour
     public LayerMask capasDestruir;
     public delegate void  OnHitEnemy();
     public static event OnHitEnemy onHitEnemy;
+    public GameObject particulas;
+    public AudioClip sonidoEnemigoMuerto;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +33,10 @@ public class MovimientoBala : MonoBehaviour
         {
             if (hit.collider.tag == "Enemigo")
             {
+                //Aparecen particulas cuando la bala toca al enemigo
+                GameObject particulasInstanciadas = Instantiate(particulas, hit.point, Quaternion.LookRotation(hit.normal));
+                AudioSource.PlayClipAtPoint(sonidoEnemigoMuerto, transform.position);
+
                 Destroy(hit.collider.gameObject);
                 if (onHitEnemy != null)
                 {

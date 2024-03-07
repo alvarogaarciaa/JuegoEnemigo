@@ -6,16 +6,21 @@ public class MovimientoEnemigo : MonoBehaviour
 {
     UnityEngine.AI.NavMeshAgent pathFinder;
     Transform target;
-    // Start is called before the first frame update
+
     void Start()
     {
         pathFinder = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        target = GameObject.FindGameObjectWithTag("Jugador").transform;
+        GameObject jugador = GameObject.FindGameObjectWithTag("Jugador");
+        if (jugador != null) {
+            target = jugador.transform;
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        pathFinder.SetDestination(target.position);
+        // Verificar si el objeto target existe antes de acceder a su posición
+        if (target != null) {
+            pathFinder.SetDestination(target.position);
+        }
     }
 }

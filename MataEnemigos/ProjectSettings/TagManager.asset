@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Jugador
   - Enemigo
+  - BotonReiniciar
+  - Particulas
   layers:
   - Default
   - TransparentFX

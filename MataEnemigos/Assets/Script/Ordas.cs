@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class Ordas : MonoBehaviour
 {
     public ValoresEnemigos[] valoresEnemigos;
@@ -29,12 +29,19 @@ public class Ordas : MonoBehaviour
     void EnemigoMuerto()
     {
         enemigosPorMatar--;
-        if(enemigosPorMatar <= 0)
+        if(enemigosPorMatar <= 0) // si no hay enemigos por matar
         {
-            NextOrda();
+            //si estoy en la escena Ronda1 y mato a todos los enemigos, cambio a la escena Ronda2 y ya esta
+            if(SceneManager.GetActiveScene().name == "Ronda1")
+            {
+                SceneManager.LoadScene("Ronda2");
+            }
+            if(SceneManager.GetActiveScene().name == "Ronda2")
+            {
+                SceneManager.LoadScene("Victoria");
+            }
         }
     }
-
     // Update is called once per frame
     void Update()
     {
