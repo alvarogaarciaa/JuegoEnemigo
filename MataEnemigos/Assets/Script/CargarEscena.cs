@@ -23,4 +23,5 @@ public class CargarEscena : MonoBehaviour
     {
         SceneManager.LoadScene("Inicio");
     }
+
 }

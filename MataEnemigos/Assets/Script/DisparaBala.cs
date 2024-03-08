@@ -7,7 +7,7 @@ public class DisparaBala : MonoBehaviour
 {
     public GameObject balaPrefab;
     public Transform puntoDisparo;
-    public float fireRate = 0.5f;
+    public float fireRate = 0.1f;
     float nextFire = 0.0f;
 
     // Start is called before the first frame update

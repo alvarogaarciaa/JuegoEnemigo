@@ -10,9 +10,6 @@ EditorBuildSettings:
     guid: 377886201ef49ff43bd0083ce79ad4c4
   - enabled: 1
     path: Assets/Scenes/Ronda1.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
-    path: Assets/Scenes/Ronda2.unity
     guid: be097b5ed3da38f41aad73ac0edf4b8b
   - enabled: 1
     path: Assets/Scenes/Victoria.unity

@@ -6,16 +6,10 @@ public class MovimientoBala : MonoBehaviour
 {
     public float speed = 10f;
     public LayerMask capasDestruir;
-    public delegate void  OnHitEnemy();
+    public delegate void OnHitEnemy();
     public static event OnHitEnemy onHitEnemy;
     public GameObject particulas;
     public AudioClip sonidoEnemigoMuerto;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -31,19 +25,28 @@ public class MovimientoBala : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, moveDistancia, capasDestruir, QueryTriggerInteraction.Collide))
         {
-            if (hit.collider.tag == "Enemigo")
+            if (hit.collider.CompareTag("Enemigo")) // Verificar si el collider pertenece al enemigo
             {
-                //Aparecen particulas cuando la bala toca al enemigo
+                Destroy(hit.collider.gameObject); // Destruir el enemigo
+                // Aparecen partículas cuando la bala toca al enemigo
                 GameObject particulasInstanciadas = Instantiate(particulas, hit.point, Quaternion.LookRotation(hit.normal));
                 AudioSource.PlayClipAtPoint(sonidoEnemigoMuerto, transform.position);
 
-                Destroy(hit.collider.gameObject);
-                if (onHitEnemy != null)
+                if (AllEnemiesDestroyed()) // Verifica si todos los enemigos de la oleada han sido destruidos
                 {
-                    onHitEnemy();
+                    if (onHitEnemy != null)
+                    {
+                        onHitEnemy();
+                    }
                 }
             }
-            Destroy(gameObject);
+            Destroy(gameObject); // Destruir la bala después de colisionar
         }
+    }
+
+    bool AllEnemiesDestroyed()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemigo");
+        return enemies.Length == 0;
     }
 }

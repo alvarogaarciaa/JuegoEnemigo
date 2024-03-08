@@ -2,59 +2,74 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 public class Ordas : MonoBehaviour
 {
     public ValoresEnemigos[] valoresEnemigos;
     private ValoresEnemigos enemigoActual;
-    float tiempoEspera = 0;
-    int numOrdaActual = 0;
-    int enemigosPorCrear = 0;
-    int enemigosPorMatar = 0;
-    // Start is called before the first frame update
+    private float tiempoEspera = 0;
+    private int numOrdaActual = 0;
+    private int enemigosPorCrear = 0;
+    private bool todasLasOrdasCompletadas = false;
+
     void Start()
     {
-        NextOrda();
-        MovimientoBala.onHitEnemy += EnemigoMuerto;
+        IniciarJuego();
     }
 
+    void IniciarJuego()
+    {
+        numOrdaActual = 0;
+        todasLasOrdasCompletadas = false;
+        NextOrda();
+    }
 
     void NextOrda()
     {
-        numOrdaActual++;
-        enemigoActual = valoresEnemigos[numOrdaActual - 1];
-        enemigosPorCrear = enemigoActual.numeroEnemigos;
-        enemigosPorMatar = enemigoActual.numeroEnemigos;
+        if (numOrdaActual < valoresEnemigos.Length)
+        {
+            enemigoActual = valoresEnemigos[numOrdaActual];
+            enemigosPorCrear = enemigoActual.numeroEnemigos;
+        }
+        else
+        {
+            todasLasOrdasCompletadas = true;
+        }
     }
 
-    void EnemigoMuerto()
-    {
-        enemigosPorMatar--;
-        if(enemigosPorMatar <= 0) // si no hay enemigos por matar
-        {
-            //si estoy en la escena Ronda1 y mato a todos los enemigos, cambio a la escena Ronda2 y ya esta
-            if(SceneManager.GetActiveScene().name == "Ronda1")
-            {
-                SceneManager.LoadScene("Ronda2");
-                enemigosPorMatar = enemigoActual.numeroEnemigos;
-            }
-            if(SceneManager.GetActiveScene().name == "Ronda2")
-            {
-                SceneManager.LoadScene("Victoria");
-            }
-        }
-    }
-    // Update is called once per frame
     void Update()
     {
-        if(enemigosPorCrear > 0 && tiempoEspera <= 0)
+        if (!todasLasOrdasCompletadas)
         {
-            Instantiate(enemigoActual.tipoEnemigo, Vector3.zero, Quaternion.identity);
-            enemigosPorCrear--;
-            tiempoEspera = enemigoActual.tiempoEntreEnemigos;
-        }
-        else 
-        {
-            tiempoEspera -= Time.deltaTime;
+            if (enemigosPorCrear > 0 && tiempoEspera <= 0)
+            {
+                Instantiate(enemigoActual.tipoEnemigo, Vector3.zero, Quaternion.identity);
+                enemigosPorCrear--;
+                tiempoEspera = enemigoActual.tiempoEntreEnemigos;
+            }
+            else if (enemigosPorCrear <= 0 && GameObject.FindGameObjectsWithTag("Enemigo").Length == 0)
+            {
+                if (numOrdaActual < valoresEnemigos.Length - 1)
+                {
+                    numOrdaActual++;
+                    NextOrda();
+                }
+                else
+                {
+                    todasLasOrdasCompletadas = true;
+                    SceneManager.LoadScene("Victoria");
+                }
+            }
+            else
+            {
+                tiempoEspera -= Time.deltaTime;
+            }
         }
     }
 }
+
+
+
+
+
+
