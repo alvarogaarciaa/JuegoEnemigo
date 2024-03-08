@@ -35,6 +35,7 @@ public class Ordas : MonoBehaviour
             if(SceneManager.GetActiveScene().name == "Ronda1")
             {
                 SceneManager.LoadScene("Ronda2");
+                enemigosPorMatar = enemigoActual.numeroEnemigos;
             }
             if(SceneManager.GetActiveScene().name == "Ronda2")
             {
